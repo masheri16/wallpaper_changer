@@ -2,6 +2,10 @@ import subprocess
 import json
 import os
 
+def set_wallpaper(filename):
+    cmd = 'gsettings set org.gnome.desktop.background picture-uri-dark "file://$(pwd)/' + filename + '"'
+    subprocess.run(cmd, shell=True, executable="/bin/bash", check=True)
+
 def download(url):
     image = curl(url, text = False)
     filename = "wallpapers/" + os.path.basename(url)
@@ -36,7 +40,8 @@ def curl(url, text = True):
 
 def main():
     data = fetch("https://peapix.com/bing/feed?country=us")
-    filename = download(data["image_url"])
+    wallpaper = download(data["image_url"])
+    set_wallpaper(wallpaper)
 
 if __name__ == "__main__":
     main()
